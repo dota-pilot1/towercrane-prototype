@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import {
   ArrowLeft,
+  Check,
+  Copy,
   ExternalLink,
   Pencil,
   RefreshCw,
@@ -73,6 +75,47 @@ function StarRating({
           />
         </button>
       ))}
+    </div>
+  );
+}
+
+function UrlField({ label, url }: { label: string; url: string }) {
+  const [copied, setCopied] = useState(false);
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1500);
+    } catch {
+      toast.error("복사하지 못했습니다.");
+    }
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-[11px] font-bold text-text-muted w-12 shrink-0">
+        {label}
+      </span>
+      <div className="ui-input flex items-center gap-1 h-8 pr-1">
+        <span className="flex-1 truncate text-[12px] text-text-secondary">
+          {url}
+        </span>
+        <button
+          onClick={() => void copy()}
+          className="ui-icon-button size-6 shrink-0"
+          title="링크 복사"
+        >
+          {copied ? <Check size={12} /> : <Copy size={12} />}
+        </button>
+        <button
+          onClick={() => void openUrl(url)}
+          className="ui-icon-button size-6 shrink-0"
+          title="열기"
+        >
+          <ExternalLink size={12} />
+        </button>
+      </div>
     </div>
   );
 }
@@ -372,35 +415,10 @@ function PrototypeDetail({
                 ))}
               </ul>
             )}
-            <div className="flex items-center gap-2 pt-1">
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => void openUrl(prototype.repoUrl)}
-              >
-                <ExternalLink size={13} />
-                저장소
-              </Button>
-              {prototype.demoUrl && (
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => void openUrl(prototype.demoUrl!)}
-                >
-                  <ExternalLink size={13} />
-                  데모
-                </Button>
-              )}
-              {prototype.figmaUrl && (
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => void openUrl(prototype.figmaUrl!)}
-                >
-                  <ExternalLink size={13} />
-                  Figma
-                </Button>
-              )}
+            <div className="flex flex-col gap-2 pt-1">
+              <UrlField label="저장소" url={prototype.repoUrl} />
+              {prototype.demoUrl && <UrlField label="데모" url={prototype.demoUrl} />}
+              {prototype.figmaUrl && <UrlField label="Figma" url={prototype.figmaUrl} />}
             </div>
           </div>
 
