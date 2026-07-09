@@ -1,0 +1,12 @@
+# dependencies
+node_modules
+
+# build output
+dist
+
+# Tauri (Rust) build artifacts
+src-tauri/target
+src-tauri/gen
+
+# local-only secrets doc — never commit
+RELEASE_SECRETS.local.md
