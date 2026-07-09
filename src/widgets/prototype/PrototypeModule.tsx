@@ -5,6 +5,7 @@ import {
   Check,
   Copy,
   ExternalLink,
+  ImageOff,
   Pencil,
   RefreshCw,
   Search,
@@ -192,8 +193,11 @@ function PrototypeModule() {
         <span className="text-[14px] font-bold tracking-tight text-text-primary">
           프로토타입
         </span>
-        <div className="flex-1" />
-        <div data-actions className="relative w-64">
+      </PageHeader>
+
+      {/* 검색/새로고침 — 윈도우 버튼과 안 겹치게 PageHeader와 별도 줄 (ChatView.tsx 패턴과 동일) */}
+      <div className="h-11 shrink-0 flex items-center justify-end gap-2 px-4 bg-surface-raised border-b border-surface-border-soft">
+        <div className="relative w-64">
           <Search
             size={14}
             className="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted"
@@ -202,7 +206,7 @@ function PrototypeModule() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="제목/요약 검색"
-            className="ui-input pl-8"
+            className="ui-input pl-8!"
           />
         </div>
         <button
@@ -212,7 +216,7 @@ function PrototypeModule() {
         >
           <RefreshCw size={14} />
         </button>
-      </PageHeader>
+      </div>
 
       <div className="flex-1 overflow-y-auto bg-surface-muted p-6">
         {loading ? (
@@ -241,7 +245,7 @@ function PrototypeModule() {
                       onClick={() => openDetail(category, p)}
                       className="ui-panel text-left p-3 hover:border-brand-border transition flex flex-col gap-2"
                     >
-                      <div className="h-32 rounded-md bg-surface-muted border border-surface-border-soft overflow-hidden flex items-center justify-center">
+                      <div className="h-32 w-full rounded-md border border-surface-border-soft overflow-hidden">
                         {p.images[0] ? (
                           <img
                             src={p.images[0]}
@@ -249,9 +253,17 @@ function PrototypeModule() {
                             className="w-full h-full object-cover"
                           />
                         ) : (
-                          <span className="text-[11px] text-text-muted">
-                            이미지 없음
-                          </span>
+                          <div
+                            className="w-full h-full flex flex-col items-center justify-center gap-2 text-text-muted"
+                            style={{
+                              backgroundColor: "var(--color-surface-muted)",
+                              backgroundImage:
+                                "repeating-linear-gradient(135deg, color-mix(in srgb, var(--color-surface-border-soft) 35%, transparent) 0 1px, transparent 1px 18px)",
+                            }}
+                          >
+                            <ImageOff size={30} strokeWidth={1.5} className="opacity-70" />
+                            <span className="text-[12px] opacity-80">이미지 없음</span>
+                          </div>
                         )}
                       </div>
                       <div className="flex items-center gap-1.5">

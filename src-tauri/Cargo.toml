@@ -1,6 +1,6 @@
 [package]
 name = "towercrane-prototype-tauri"
-version = "0.1.1"
+version = "0.1.2"
 description = "Towercrane Prototype - 프로토타입 카탈로그/리뷰 도구"
 authors = ["you"]
 edition = "2021"
